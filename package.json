@@ -1,0 +1,27 @@
+{
+  "name": "amatik",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"cd frontend && npm start\" \"cd backend && npm start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wissem-wizza/AMATIK.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wissem-wizza/AMATIK/issues"
+  },
+  "homepage": "https://github.com/wissem-wizza/AMATIK#readme",
+  "dependencies": {
+    "concurrently": "^7.6.0",
+    "node-cron": "^3.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

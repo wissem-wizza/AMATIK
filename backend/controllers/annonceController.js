@@ -16,7 +16,7 @@ const getAnnonce = async (req, res) => {
     return res.status(404).json({ error: "Aucune annonce ne correspond!" });
   }
 
-  const annonce = await Annonce.find(id);
+  const annonce = await Annonce.find({ id });
 
   if (!annonce) {
     return res.status(400).json({ error: "Aucune annonce ne correspond!" });

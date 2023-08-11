@@ -6,7 +6,9 @@ const connectDB = require("./config/DBConnect");
 const cors = require("cors");
 
 const eleveurRoutes = require("./routes/eleveurRoutes");
+const clientRoutes = require("./routes/clientRoutes");
 const annonceRoutes = require("./routes/annonceRoutes");
+const factureRoutes = require("./routes/factureRoutes");
 const userRoutes = require("./routes/userRoutes");
 
 const port = process.env.PORT || 4000;
@@ -27,6 +29,7 @@ app.use(
 
 //parses requests to check the body "req.body"
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
   console.log(req.path, req.method);
@@ -41,7 +44,9 @@ app.use((req, res, next) => {
 
 //routes
 app.use("/api/eleveur", eleveurRoutes);
-app.use("/api/annonces", annonceRoutes);
+app.use("/api/facture", factureRoutes);
+app.use("/api/client", clientRoutes);
+app.use("/api/annonce", annonceRoutes);
 app.use("/api/user", userRoutes);
 
 //listen to port for requests

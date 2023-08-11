@@ -11,12 +11,13 @@ const getEleveurs = async (req, res) => {
 //get a single eleveur
 const getEleveur = async (req, res) => {
   const id = req.params.id;
+  console.log("backend id: ", id);
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "id non valid!" });
   }
-  console.log("Database Name:", mongoose.connection.name);
-  console.log("Collection Name:", Eleveur.collection.name);
+  // console.log("Database Name:", mongoose.connection.name);
+  // console.log("Collection Name:", Eleveur.collection.name);
   const eleveur = await Eleveur.findOne({ _id: id });
 
   if (!eleveur) {

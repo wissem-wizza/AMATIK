@@ -2,7 +2,7 @@ import styled from "styled-components"; //, { createGlobalStyle, css }
 
 const StyledContainer = styled("Container")`
   .Mui-selected.MuiPaginationItem-page.css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root {
-    background: #06603a;
+    background: #9C1F08;
   }
   .MuiPagination-root.MuiPagination-text.css-1oj2twp-MuiPagination-root {
     margin-right: 250px;

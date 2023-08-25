@@ -3,6 +3,7 @@ const express = require("express");
 const {
   getEleveur,
   getEleveurs,
+  getEleveursName,
   createEleveur,
   updateEleveur,
   deleteEleveur,
@@ -12,6 +13,7 @@ const router = express.Router();
 
 //get all eleveurs
 router.get("/", getEleveurs);
+router.get("/name", getEleveursName);
 //get a single eleveur
 router.get("/:id", getEleveur);
 

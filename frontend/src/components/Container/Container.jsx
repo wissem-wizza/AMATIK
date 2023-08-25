@@ -129,7 +129,7 @@ const Container = () => {
                     <NavLink to="/saisie">Les tickets de saisie</NavLink>
                   </li>
                   <li>
-                    <NavLink to="/parts">Les parts sociales</NavLink>
+                    <NavLink to="/part_sociale">Les parts sociales</NavLink>
                   </li>
                   <li>
                     <NavLink to="/BE">Les bons d'enlèvement</NavLink>

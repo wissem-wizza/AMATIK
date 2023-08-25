@@ -15,6 +15,7 @@ import EleveurPage from "./pages/Eleveur";
 import ClientPage from "./pages/Client"; // "./components/ClientList/ClientList";
 import AnnoncePage from "./pages/Annonce";
 import FactureClient from "./components/FactureList/FactureList";
+import PartSocialePage from "./pages/PartSociale"; // "./components/ClientList/ClientList";
 // import ClientList from "./"
 // import DataGridPremiumDemo from "./pages/Test";
 // layouts
@@ -38,6 +39,7 @@ const router = createBrowserRouter(
       <Route path="facture" element={<FacturePage />} />
       <Route path="annonce" element={<AnnoncePage />} />
       <Route path="client" element={<ClientPage />} />
+      <Route path="part_sociale" element={<PartSocialePage />} />
       <Route path="client/facture" element={<FactureClient />} />
       {/* <Route path="test" element={<FactureList />} /> */}
       {/* <Route path="help" element={<HelpLayout />}>

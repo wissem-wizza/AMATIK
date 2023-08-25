@@ -8,6 +8,14 @@ const getEleveurs = async (req, res) => {
   res.status(200).json(eleveurs);
 };
 
+//get all eleveurs
+const getEleveursName = async (req, res) => {
+  const eleveurs = await Eleveur.find({}, { NOM: 1 }).sort({ NOM: 1 }); //.sort({ createdAt: -1 });
+  names = eleveurs.map(eleveur => eleveur.NOM)
+  console.log("names", names)
+  res.status(200).json(names);
+};
+
 //get a single eleveur
 const getEleveur = async (req, res) => {
   const id = req.params.id;
@@ -92,6 +100,7 @@ const updateEleveur = async (req, res) => {
 module.exports = {
   getEleveur,
   getEleveurs,
+  getEleveursName,
   createEleveur,
   updateEleveur,
   deleteEleveur,

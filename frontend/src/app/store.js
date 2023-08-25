@@ -8,6 +8,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { eleveurApi } from "../features/eleveur/eleveurApi";
 import { factureApi } from "../features/facture/factureApi";
 import { clientApi } from "../features/client/clientApi";
+import { partSocialeApi } from "../features/part_sociale/partSocialeApi";
 import { annonceApi } from "../features/annonce/annonceApi";
 
 export const store = configureStore({
@@ -18,6 +19,7 @@ export const store = configureStore({
     [annonceApi.reducerPath]: annonceApi.reducer,
     [factureApi.reducerPath]: factureApi.reducer,
     [clientApi.reducerPath]: clientApi.reducer,
+    [partSocialeApi.reducerPath]: partSocialeApi.reducer,
     auth: authReducer,
     // annonce: annonceReducer,
     // especes: especeReducer,
@@ -26,6 +28,7 @@ export const store = configureStore({
     getDefaultMiddleware()
       .concat(eleveurApi.middleware)
       .concat(clientApi.middleware)
+      .concat(partSocialeApi.middleware)
       .concat(annonceApi.middleware)
       .concat(factureApi.middleware),
   devTools: true,

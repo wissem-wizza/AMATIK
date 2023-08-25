@@ -10,6 +10,7 @@ const clientRoutes = require("./routes/clientRoutes");
 const annonceRoutes = require("./routes/annonceRoutes");
 const factureRoutes = require("./routes/factureRoutes");
 const userRoutes = require("./routes/userRoutes");
+const partSocialeRoutes = require("./routes/partSocialeRoutes");
 
 const port = process.env.PORT || 4000;
 
@@ -48,6 +49,7 @@ app.use("/api/facture", factureRoutes);
 app.use("/api/client", clientRoutes);
 app.use("/api/annonce", annonceRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/part_sociale", partSocialeRoutes);
 
 //listen to port for requests
 app.listen(port, () => console.log(`listening on port : ${port}`));

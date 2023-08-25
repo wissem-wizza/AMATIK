@@ -9,6 +9,10 @@ export const eleveurApi = createApi({
       query: () => "/eleveur",
     }),
 
+    getEleveursName: builder.query({
+      query: () => "/eleveur/name",
+    }),
+
     // Fetch a single eleveur by ID
     getEleveurById: builder.query({
       query: (id) => `/eleveur/${id}`,
@@ -44,6 +48,7 @@ export const eleveurApi = createApi({
 
 export const {
   useGetEleveursQuery,
+  useGetEleveursNameQuery,
   useGetEleveurByIdQuery,
   useCreateEleveurMutation,
   useDeleteEleveurMutation,

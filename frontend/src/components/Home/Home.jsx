@@ -1,11 +1,13 @@
 import Container from "../Container/Container";
-import { Outlet, NavLink } from "react-router-dom";
+// import { Outlet, NavLink } from "react-router-dom";
+import Login from "../Login/Login";
+// import { useState } from "react";
 
 export default function RootLayout() {
   return (
     <div className="root-layout">
       <Container />
-
+      {/* <Login /> */}
       {/* <header>
         <nav>
           <h1>Jobarouter</h1>
@@ -14,7 +16,10 @@ export default function RootLayout() {
           <NavLink to="help">Help</NavLink>
         </nav>
       </header> */}
-      <main>{/* <Outlet /> */}</main>
+
+      {/* <main>
+        <Outlet />
+      </main> */}
     </div>
   );
 }

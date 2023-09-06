@@ -19,6 +19,7 @@ const loginUser = async (req, res) => {
   }
 };
 
+// we no need signup in our our project, we juste need createUser (CRUD)
 const signupUser = async (req, res) => {
   const { EMAIL, PASSWORD } = req.body;
   try {

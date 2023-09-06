@@ -2,19 +2,20 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 
-const userSchema = mongoose.Schema({
-  EMAIL: {
-    type: String,
-    required: true,
-    unique: true,
+const userSchema = mongoose.Schema(
+  {
+    EMAIL: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    PASSWORD: {
+      type: String,
+      required: true,
+    },
   },
-  PASSWORD: {
-    type: String,
-    required: true,
-  },
-},
-{ collection: "user" },
-{ timestamps: true }
+  { collection: "user" },
+  { timestamps: true }
 );
 
 userSchema.statics.signup = async function (EMAIL, PASSWORD, PROFIL, NOM, CLE) {
@@ -48,7 +49,6 @@ userSchema.statics.signup = async function (EMAIL, PASSWORD, PROFIL, NOM, CLE) {
 
 //validation à optimiser (email valide)
 userSchema.statics.login = async function (EMAIL, PASSWORD) {
-  console.log(EMAIL,PASSWORD)
   if (!EMAIL || !PASSWORD) {
     throw Error("Tous les champs doivent être remplis.");
   }

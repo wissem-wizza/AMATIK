@@ -11,16 +11,18 @@ const {
 
 const router = express.Router();
 
-//get all clients
-router.get("/", getClients);
-//get all clients
-router.get("/civilite", getCiviliteClients);
-//get a single client
-router.get("/:id", getClient);
+const { protect } = require("../Middleware/authMiddleware");
 
-router.post("/", createClient);
-router.patch("/:id", updateClient);
-router.delete("/:id", deleteClient);
+//get all clients
+router.get("/", protect, getClients);
+//get all clients
+router.get("/civilite", protect, getCiviliteClients);
+//get a single client
+router.get("/:id", protect, getClient);
+
+router.post("/", protect, createClient);
+router.patch("/:id", protect, updateClient);
+router.delete("/:id", protect, deleteClient);
 
 // router.route('/').get(protect, ).post(protect, )
 // router.route('/:id').delete(protect, delete).put(protect, update)

@@ -7,7 +7,6 @@ const getAnnonces = async (req, res) => {
   const ParamDateFin = req.query.DATE_F;
   const ParamCle = req.query.CLE;
   const ParamRace = req.query.RACE;
-  // console.log("BACK : ",req.query)
   const annonces = await Annonce.aggregate([
     {
       $match: {

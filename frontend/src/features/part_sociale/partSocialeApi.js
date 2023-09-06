@@ -2,17 +2,22 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const partSocialeApi = createApi({
   reducerPath: "part_sociale",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:4000/api/" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:4000/api/",
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth.token;
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      console.log("Header: ", headers);
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     // Fetch all part_sociales
     getPartSociales: builder.query({
       query: () => "/part_sociale",
     }),
-
-    // // Fetch all part_sociales
-    // getCivilitePartSociales: builder.query({
-    //   query: () => "/part_sociale/civilite",
-    // }),
 
     // Fetch a single part_sociale by ID
     getPartSocialeById: builder.query({

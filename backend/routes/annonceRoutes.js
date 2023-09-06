@@ -10,14 +10,16 @@ const {
 
 const router = express.Router();
 
-//get all announces
-router.get("/", getAnnonces);
-//get a single announce
-router.get("/:id", getAnnonce);
+const { protect } = require("../Middleware/authMiddleware");
 
-router.post("/", createAnnonce);
-router.patch("/:id", updateAnnonce);
-router.delete("/:id", deleteAnnonce);
+//get all announces
+router.get("/", protect, getAnnonces);
+//get a single announce
+router.get("/:id", protect, getAnnonce);
+
+router.post("/", protect, createAnnonce);
+router.patch("/:id", protect, updateAnnonce);
+router.delete("/:id", protect, deleteAnnonce);
 
 // router.route('/').get(protect, ).post(protect, )
 // router.route('/:id').delete(protect, delete).put(protect, update)

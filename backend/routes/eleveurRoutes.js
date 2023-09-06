@@ -11,15 +11,17 @@ const {
 
 const router = express.Router();
 
-//get all eleveurs
-router.get("/", getEleveurs);
-router.get("/name", getEleveursName);
-//get a single eleveur
-router.get("/:id", getEleveur);
+const { protect } = require("../Middleware/authMiddleware");
 
-router.post("/", createEleveur);
-router.patch("/:id", updateEleveur);
-router.delete("/:id", deleteEleveur);
+//get all eleveurs
+router.get("/", protect, getEleveurs);
+router.get("/name", protect, getEleveursName);
+//get a single eleveur
+router.get("/:id", protect, getEleveur);
+
+router.post("/", protect, createEleveur);
+router.patch("/:id", protect, updateEleveur);
+router.delete("/:id", protect, deleteEleveur);
 
 // router.route('/').get(protect, ).post(protect, )
 // router.route('/:id').delete(protect, delete).put(protect, update)

@@ -4,10 +4,14 @@ import ContainerStyle from "./Container.style";
 import { Outlet, NavLink } from "react-router-dom";
 import AMATIK_logo from "./AMATIK_logo.png";
 import InventoryRoundedIcon from "@mui/icons-material/InventoryRounded";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../features/auth/authSlice";
 
 const Container = () => {
   const [showMenu, setShowMenu] = useState(true);
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
@@ -15,6 +19,19 @@ const Container = () => {
   const handleArrowClick = (e) => {
     const arrowParent = e.currentTarget.parentElement.parentElement;
     arrowParent.classList.toggle("showMenu");
+  };
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    navigate("/login");
+    // console.log(email, password);
+    // const userData = await login({
+    //   EMAIL: email,
+    //   PASSWORD: password,
+    // }).unwrap();
+    // // const userData = await login({ email, password }).unwrap();
+    // console.log("userData", userData);
+    dispatch(logOut());
   };
 
   return (
@@ -221,7 +238,7 @@ const Container = () => {
                     <div className="profile_name">SALIES Christian</div>
                     <div className="job">Technicien</div>
                   </div>
-                  <i className="bx bx-log-out" />
+                  <i className="bx bx-log-out" onClick={handleLogout} />
                 </div>
               </li>
             </ul>

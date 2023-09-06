@@ -11,21 +11,17 @@ const getEleveurs = async (req, res) => {
 //get all eleveurs
 const getEleveursName = async (req, res) => {
   const eleveurs = await Eleveur.find({}, { NOM: 1 }).sort({ NOM: 1 }); //.sort({ createdAt: -1 });
-  names = eleveurs.map(eleveur => eleveur.NOM)
-  console.log("names", names)
+  names = eleveurs.map((eleveur) => eleveur.NOM);
   res.status(200).json(names);
 };
 
 //get a single eleveur
 const getEleveur = async (req, res) => {
   const id = req.params.id;
-  console.log("backend id: ", id);
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "id non valid!" });
   }
-  // console.log("Database Name:", mongoose.connection.name);
-  // console.log("Collection Name:", Eleveur.collection.name);
   const eleveur = await Eleveur.findOne({ _id: id });
 
   if (!eleveur) {

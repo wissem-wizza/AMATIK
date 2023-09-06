@@ -2,7 +2,17 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const factureApi = createApi({
   reducerPath: "facture",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:4000/api/" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:4000/api/",
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth.token;
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      console.log("Header: ", headers);
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     // Fetch all factures
     getFactures: builder.query({

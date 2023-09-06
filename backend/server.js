@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const connectDB = require("./config/DBConnect");
+const { errorHandler } = require("./Middleware/errorMidlleware");
 
 const cors = require("cors");
 
@@ -18,15 +19,17 @@ connectDB();
 
 const app = express();
 
-app.use(
-  cors({
-    // allowedHeaders: ["authorization", "Content-Type"], // you can change the headers
-    // exposedHeaders: ["authorization"], // you can change the headers
-    origin: "*",
-    // methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    // preflightContinue: false,
-  })
-);
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+
+// app.use(
+//   cors({
+//     allowedHeaders: ["authorization", "Content-Type"], // you can change the headers
+//     exposedHeaders: ["authorization"], // you can change the headers
+//     origin: "http://localhost:3000",
+//     // methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//     // preflightContinue: false,
+//   })
+// );
 
 //parses requests to check the body "req.body"
 app.use(express.json());
@@ -44,12 +47,13 @@ app.use((req, res, next) => {
 });
 
 //routes
+app.use("/api", userRoutes);
 app.use("/api/eleveur", eleveurRoutes);
 app.use("/api/facture", factureRoutes);
 app.use("/api/client", clientRoutes);
 app.use("/api/annonce", annonceRoutes);
-app.use("/api/user", userRoutes);
 app.use("/api/part_sociale", partSocialeRoutes);
+app.use(errorHandler);
 
 //listen to port for requests
 app.listen(port, () => console.log(`listening on port : ${port}`));

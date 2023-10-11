@@ -1,21 +1,13 @@
 const express = require("express");
 
-const { getFacture, getFactures } = require("../controllers/factureController");
+const { getFacture, getFactures, getFactureSelectFields } = require("../controllers/factureController");
+const { authenticated } = require("../middleware/authentication");
+const { supervisorOnly } = require("../middleware/authorization");
 
 const router = express.Router();
 
-const { protect } = require("../Middleware/authMiddleware");
-
-//get all factures
-router.get("/", protect, getFactures);
-//get a single facture
-router.get("/:id", protect, getFacture);
-
-// router.post("/", protect, createFacture);
-// router.patch("/:id", protect, updateFacture);
-// router.delete("/:id", protect, deleteFacture);
-
-// router.route('/').get(protect, ).post(protect, )
-// router.route('/:id').delete(protect, delete).put(protect, update)
+router.get("/", authenticated, supervisorOnly, getFactures);
+router.get("/select", authenticated, supervisorOnly, getFactureSelectFields);
+router.get("/:id", authenticated, supervisorOnly, getFacture);
 
 module.exports = router;

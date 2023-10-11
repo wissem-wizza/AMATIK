@@ -1,56 +1,87 @@
 const Client = require("../models/clientModel");
 const mongoose = require("mongoose");
 
-//get all clients
+// @route   GET /api/client
+// @desc    get client list
+// @access  authenticated supervisor
 const getClients = async (req, res) => {
-  const clients = await Client.find({}); //.sort({ createdAt: -1 });
+  try {
+    const clients = await Client.find({}); //.sort({ createdAt: -1 });
 
-  res.status(200).json(clients);
+    res.status(200).json(clients);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
-//get client + civilite
+// @route   GET /api/client/total
+// @desc    get total client
+// @access  authenticated supervisor
+const getTotalClients = async (req, res) => {
+  try {
+    const clients = await Client.count({}); //.sort({ createdAt: -1 });
+
+    res.status(200).json(clients);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// @route   GET /api/client/civilite
+// @desc    get client + civilite
+// @access  authenticated supervisor
 const getCiviliteClients = async (req, res) => {
-  const clients = await Client.aggregate([
-    {
-      $lookup: {
-        from: "labelle",
-        let: { teteValue: "$TETE" },
-        pipeline: [
-          {
-            $match: {
-              $expr: {
-                $and: [
-                  { $eq: ["$code", "$$teteValue"] },
-                  { $eq: ["$type", 31] },
-                ],
+  try {
+    const clients = await Client.aggregate([
+      {
+        $lookup: {
+          from: "label",
+          let: { teteValue: "$TETE" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$code", "$$teteValue"] },
+                    { $eq: ["$type", 31] },
+                  ],
+                },
               },
             },
-          },
-        ],
-        as: "libelles",
+          ],
+          as: "libelles",
+        },
       },
-    },
-    {
-      $project: {
-        _id: 1,
-        CLE: 1,
-        NOM: 1,
-        ADR0: 1,
-        ADR2: 1,
-        ADRLIV1: 1,
-        DATE_DERNIERE_FACTURE: 1,
-        TELEP: 1,
-        FAX: 1,
-        portable: 1,
-        ACTIF: 1,
-        "libelles.libelle": 1,
+      {
+        $project: {
+          _id: 1,
+          CLE: 1,
+          NOM: 1,
+          ADR: ["$ADR0", "$ADR1", "$ADR2"],
+          ADRLIV: ["$ADRLIV0", "$ADRLIV1", "$ADRLIV2"],
+          DATE_DERNIERE_FACTURE: 1,
+          TELEP: 1,
+          FAX: 1,
+          portable: 1,
+          ACTIF: 1,
+          "libelles.libelle": 1,
+        },
       },
-    },
-  ]); //.sort({ createdAt: -1 });
-  res.status(200).json(clients);
+      {
+        $sort: {
+          DATE_DERNIERE_FACTURE: -1,
+        },
+      },
+    ]); //.sort({ createdAt: -1 });
+    res.status(200).json(clients);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
-//get a single client
+// @route   GET /api/client/:id
+// @desc    get one client record
+// @access  authenticated supervisor
 const getClient = async (req, res) => {
   const id = req.params.id;
 
@@ -58,19 +89,23 @@ const getClient = async (req, res) => {
     return res.status(404).json({ error: "id non valid!" });
   }
 
-  const client = await Client.findOne({ _id: id });
+  try {
+    const client = await Client.findById(id);
 
-  if (!client) {
-    return res.status(400).json({ error: "Aucun client ne correspond!" });
+    if (!client) {
+      return res.status(400).json({ error: "Aucun client ne correspond!" });
+    }
+
+    res.status(200).json(client);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
-
-  res.status(200).json(client);
 };
 
-// create a new client
+// @route   POST /api/client
+// @desc    create a new client record
+// @access  authenticated supervisor
 const createClient = async (req, res) => {
-  console.log(req.body);
-
   // let emptyFields = [];
   // if (!client_id) {
   //   emptyFields.push("id client");
@@ -90,7 +125,9 @@ const createClient = async (req, res) => {
   }
 };
 
-// delete an client
+// @route   DELETE /api/client/:id
+// @desc    delete one client record
+// @access  authenticated supervisor
 const deleteClient = async (req, res) => {
   const { id } = req.params;
 
@@ -98,16 +135,22 @@ const deleteClient = async (req, res) => {
     return res.status(400).json({ error: "l'id n'est pas valide!" });
   }
 
-  const client = await Client.findOneAndDelete({ _id: id });
+  try {
+    const client = await Client.findOneAndDelete({ _id: id });
 
-  if (!client) {
-    return res.status(400).json({ error: "Aucun client ne correspond!" });
+    if (!client) {
+      return res.status(400).json({ error: "Aucun client ne correspond!" });
+    }
+
+    res.status(200).json(client);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
-
-  res.status(200).json(client);
 };
 
-//update an client
+// @route   PATCH /api/client/:id
+// @desc    update one client record
+// @access  authenticated supervisor
 const updateClient = async (req, res) => {
   const { id } = req.params;
 
@@ -115,22 +158,28 @@ const updateClient = async (req, res) => {
     return res.status(400).json({ error: "Aucun client ne correspond!" });
   }
 
-  const client = await Client.findOneAndUpdate(
-    { _id: id },
-    {
-      ...req.body,
+  try {
+    const client = await Client.findOneAndUpdate(
+      { _id: id },
+      {
+        ...req.body,
+      },
+      { new: true }
+    );
+
+    if (!client) {
+      return res.status(400).json({ error: "Aucun client ne correspond!" });
     }
-  );
 
-  if (!client) {
-    return res.status(400).json({ error: "Aucun client ne correspond!" });
+    res.status(200).json(client);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
-
-  res.status(200).json(client);
 };
 
 module.exports = {
   getClients,
+  getTotalClients,
   getCiviliteClients,
   getClient,
   createClient,

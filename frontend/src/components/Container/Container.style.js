@@ -1,22 +1,45 @@
 import styled from "styled-components"; //, { createGlobalStyle, css }
 
-const StyledContainer = styled("Container")`
+// old margin for .content:
+// margin-left: ${({ showMenu }) => (showMenu ? "358px" : "156px")};
+
+const StyledContainer = styled("div")`
+  #sheep-icon {
+    max-width: 24px; /* Adjust the width and height to match your icon size */
+    max-height: 24px;
+    display: inline-block;
+    color: white;
+    background-image: url('/sheep.svg');
+    /* background-size: contain; or contain, depending on how you want to display the image */
+    background-repeat: no-repeat;
+    background-position: center;
+    /* margin-left: 26px; */
+  }
   .Mui-selected.MuiPaginationItem-page.css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root {
     background: #9C1F08;
   }
-  .MuiPagination-root.MuiPagination-text.css-1oj2twp-MuiPagination-root {
-    margin-right: 250px;
-  }
+  /* .MuiPagination-root.MuiPagination-text.css-1oj2twp-MuiPagination-root { */
+    /* margin-right: 100px; */
+  /* } */
   .container {
-    /* background: #064f32; */
+    display: flex;
+    background: #ddd;
+    min-height: 100vh;
+    max-height: 100vh;
+    min-width: 100vw;
+    max-width: 100vw;
+    overflow: hidden;
     /* border: 2px solid blue; */
   }
   .navbar {
     /* border: 2px solid black; */
-    position: sticky;
+    position: fixed;
     top: 0;
-    background: #06603a;
-    z-index: 100;
+    min-height: 64px;
+    min-width: 100vw;
+    background: #F5F5F5;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
   }
   /* .content {
     width: 50px;
@@ -24,18 +47,38 @@ const StyledContainer = styled("Container")`
     float: right;
     box-sizing: border-box;
   } */
-  .content {
-    flex: 1;
-    box-sizing: border-box;
-    margin-left: ${({ showMenu }) => (showMenu ? "156px" : "358px")};
-    margin-right: 78px;
-    margin-top: 78px;
-    transition: margin-left 0.5s ease;
+  .content .content-card {
+    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
   }
   .menu-content {
     display: flex;
-    width: 100%;
-    overflow: auto;
+    flex: 1;
+    margin-top: 64px;
+    width: 100vw;
+    /* min-height: 200vh; */
+    overflow-y: auto;
+    /* overflow-x: hidden; */
+  }
+  .content {
+    flex: 1;
+    padding-left: ${({ type }) => (type === "Superviseur" ? "var(--sidebar-padding)" : "10%")};
+    padding-right: ${({ type }) => (type === "Superviseur" ? "78px" : "10%")};
+    padding-top: 30px;
+    overflow-x: hidden;
+    transition: margin-left 0.5s ease;
+  }
+  .hide-content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: ${({ showMenu }) => (showMenu ? 0 : "100%")};
+    /* right: 100%; */
+    /* display: ${({ showMenu }) => (showMenu ? "block" : "none")}; */
+    background-color: #666; 
+    opacity: 0.8;
+    z-index: 10;
+    /* transition: right 5s ease; */
   }
   .sidebar {
     flex: 1;
@@ -62,9 +105,10 @@ const StyledContainer = styled("Container")`
 
   /* .sidebar .logo-details i { */
   .sidebar i {
+    /* background-color: red; */
     font-size: 30px;
     color: #fff;
-    height: 50px;
+    min-height: 50px;
     min-width: 78px;
     text-align: center;
     line-height: 50px;
@@ -99,47 +143,49 @@ const StyledContainer = styled("Container")`
     position: relative;
     list-style: none;
     transition: all 0.4s ease;
+    cursor: pointer;
   }
   .sidebar .nav-links li:hover {
     background: #06603a;
     /* background: #1d1b31; */
   }
-  .sidebar .nav-links li .iocn-link {
+  .sidebar .nav-links li .icon-link {
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
-  .sidebar.close .nav-links li .iocn-link {
-    display: block;
+  .sidebar.close .nav-links li .icon-link { // displayed labels when hovering over icons on closed menu
+    display: block; // otherwise labels will get tangled
   }
-  .sidebar .nav-links li i {
+  .sidebar .nav-links li i,
+  .sidebar .nav-links li svg {
     height: 50px;
     min-width: 78px;
     text-align: center;
     line-height: 50px;
     color: #fff;
-    font-size: 18px;
+    font-size: 1.562rem; // old value is 18px
     cursor: pointer;
     transition: all 0.3s ease;
   }
-  .sidebar .nav-links li.showMenu i.arrow {
+  .sidebar .nav-links li.show-submenu i.arrow {
     transform: rotate(-180deg);
   }
   .sidebar.close .nav-links i.arrow {
     display: none;
   }
-  .sidebar .nav-links li a {
+  .sidebar .nav-links li .menu-item {
     display: flex;
     align-items: center;
     text-decoration: none;
   }
-  .sidebar .nav-links li a .link_name {
+  .sidebar .nav-links li span.link_name {
     font-size: 15px;
     font-weight: 400;
     color: #fff;
     transition: all 0.4s ease;
   }
-  .sidebar.close .nav-links li a .link_name {
+  .sidebar.close .nav-links li span.link_name {
     opacity: 0;
     pointer-events: none;
   }
@@ -150,7 +196,7 @@ const StyledContainer = styled("Container")`
     background: #06603a;
     display: none;
   }
-  .sidebar .nav-links li.showMenu .sub-menu {
+  .sidebar .nav-links li.show-submenu .sub-menu {
     display: block;
   }
   .sidebar .nav-links li .sub-menu a {
@@ -200,56 +246,6 @@ const StyledContainer = styled("Container")`
   .sidebar .nav-links li:hover .sub-menu.blank {
     top: 50%;
     transform: translateY(-50%);
-  }
-  .sidebar .profile-details {
-    position: fixed;
-    bottom: 0;
-    width: 280px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    /* background: #1d1b31; */
-    background: #06603a;
-    padding: 12px 0;
-    transition: all 0.5s ease;
-  }
-  .sidebar.close .profile-details {
-    background: none;
-  }
-  .sidebar.close .profile-details {
-    width: 78px;
-  }
-  .sidebar .profile-details .profile-content {
-    display: flex;
-    align-items: center;
-  }
-  .sidebar .profile-details img {
-    height: 52px;
-    width: 52px;
-    object-fit: cover;
-    border-radius: 16px;
-    margin: 0 14px 0 12px;
-    /* background: #1d1b31; */
-    background: #06603a;
-    transition: all 0.5s ease;
-  }
-  .sidebar.close .profile-details img {
-    padding: 10px;
-  }
-  .sidebar .profile-details .profile_name,
-  .sidebar .profile-details .job {
-    color: #fff;
-    font-size: 18px;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-  .sidebar.close .profile-details i,
-  .sidebar.close .profile-details .profile_name,
-  .sidebar.close .profile-details .job {
-    display: none;
-  }
-  .sidebar .profile-details .job {
-    font-size: 12px;
   }
   .home-nav {
     position: fixed;

@@ -1,27 +1,45 @@
 const express = require("express");
+const Annonce = require("../models/annonceModel");
 
 const {
   getAnnonce,
   getAnnonces,
+  getAnnonceByEtat,
+  getAnnonceStatistics,
+  getAnnoncesByEleveur,
   createAnnonce,
   updateAnnonce,
   deleteAnnonce,
+  getAnnonceSelectFields,
 } = require("../controllers/annonceController");
+const { authenticated } = require("../middleware/authentication");
+const {
+  supervisorOnly,
+  eleveurCreator,
+  eleveurCreatorByModel,
+} = require("../middleware/authorization");
 
 const router = express.Router();
 
-const { protect } = require("../Middleware/authMiddleware");
+router.get("/", authenticated, supervisorOnly, getAnnonces);
+router.get("/eleveur/:id", authenticated, eleveurCreator, getAnnoncesByEleveur);
+router.get("/select", authenticated, getAnnonceSelectFields);
+router.get("/statistics", authenticated, getAnnonceStatistics);
+router.get("/etat", authenticated, getAnnonceByEtat);
+router.get("/:id", authenticated, eleveurCreatorByModel(Annonce), getAnnonce);
 
-//get all announces
-router.get("/", protect, getAnnonces);
-//get a single announce
-router.get("/:id", protect, getAnnonce);
-
-router.post("/", protect, createAnnonce);
-router.patch("/:id", protect, updateAnnonce);
-router.delete("/:id", protect, deleteAnnonce);
-
-// router.route('/').get(protect, ).post(protect, )
-// router.route('/:id').delete(protect, delete).put(protect, update)
+router.post("/", authenticated, createAnnonce);
+router.patch(
+  "/:id",
+  authenticated,
+  eleveurCreatorByModel(Annonce),
+  updateAnnonce
+);
+router.delete(
+  "/:id",
+  authenticated,
+  eleveurCreatorByModel(Annonce),
+  deleteAnnonce
+);
 
 module.exports = router;

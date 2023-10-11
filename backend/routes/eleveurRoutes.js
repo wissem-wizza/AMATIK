@@ -4,26 +4,24 @@ const {
   getEleveur,
   getEleveurs,
   getEleveursName,
+  getTotalEleveur,
+  isCLEandEmailMatch,
   createEleveur,
   updateEleveur,
   deleteEleveur,
 } = require("../controllers/eleveurController");
+const { authenticated } = require("../middleware/authentication");
 
 const router = express.Router();
 
-const { protect } = require("../Middleware/authMiddleware");
+router.get("/", authenticated, getEleveurs);
+router.get("/name", authenticated, getEleveursName);
+router.get("/total", authenticated, getTotalEleveur);
+router.get("/:id", authenticated, getEleveur);
 
-//get all eleveurs
-router.get("/", protect, getEleveurs);
-router.get("/name", protect, getEleveursName);
-//get a single eleveur
-router.get("/:id", protect, getEleveur);
-
-router.post("/", protect, createEleveur);
-router.patch("/:id", protect, updateEleveur);
-router.delete("/:id", protect, deleteEleveur);
-
-// router.route('/').get(protect, ).post(protect, )
-// router.route('/:id').delete(protect, delete).put(protect, update)
+router.post("/match", isCLEandEmailMatch);
+router.post("/", authenticated, createEleveur);
+router.patch("/:id", authenticated, updateEleveur);
+router.delete("/:id", authenticated, deleteEleveur);
 
 module.exports = router;

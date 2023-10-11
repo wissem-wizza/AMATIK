@@ -2,16 +2,25 @@ require("dotenv").config();
 
 const express = require("express");
 const connectDB = require("./config/DBConnect");
-const { errorHandler } = require("./Middleware/errorMidlleware");
+const { errorHandler } = require("./middleware/errorMiddleware");
 
 const cors = require("cors");
 
 const eleveurRoutes = require("./routes/eleveurRoutes");
 const clientRoutes = require("./routes/clientRoutes");
 const annonceRoutes = require("./routes/annonceRoutes");
+const annonceLaineRoutes = require("./routes/annonceLaineRoutes");
 const factureRoutes = require("./routes/factureRoutes");
+const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const partSocialeRoutes = require("./routes/partSocialeRoutes");
+const bonLivraisonRoutes = require("./routes/bonLivraisonRoutes");
+const abattageRoutes = require("./routes/abattageRoutes");
+const parametresDiversRoutes = require("./routes/parametresDiversRoutes");
+const transportRoutes = require("./routes/transportRoutes");
+const identificationRoutes = require("./routes/identificationRoutes");
+const ristourneRoutes = require("./routes/ristourneRoutes");
+const otherRoutes = require("./routes/otherRoutes");
 
 const port = process.env.PORT || 4000;
 
@@ -47,12 +56,21 @@ app.use((req, res, next) => {
 });
 
 //routes
-app.use("/api", userRoutes);
+app.use("/api", authRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/eleveur", eleveurRoutes);
 app.use("/api/facture", factureRoutes);
 app.use("/api/client", clientRoutes);
 app.use("/api/annonce", annonceRoutes);
+app.use("/api/annonce_laine", annonceLaineRoutes);
 app.use("/api/part_sociale", partSocialeRoutes);
+app.use("/api/bon_livraison", bonLivraisonRoutes);
+app.use("/api/abattage", abattageRoutes);
+app.use("/api/parametres_divers", parametresDiversRoutes);
+app.use("/api/transport", transportRoutes);
+app.use("/api/identification", identificationRoutes);
+app.use("/api/ristourne", ristourneRoutes);
+app.use("/api/other", otherRoutes)
 app.use(errorHandler);
 
 //listen to port for requests

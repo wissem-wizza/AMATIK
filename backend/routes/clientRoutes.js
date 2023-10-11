@@ -4,27 +4,22 @@ const {
   getClient,
   getCiviliteClients,
   getClients,
+  getTotalClients,
   createClient,
   updateClient,
   deleteClient,
 } = require("../controllers/clientController");
+const { authenticated } = require("../middleware/authentication");
 
 const router = express.Router();
 
-const { protect } = require("../Middleware/authMiddleware");
+router.get("/", authenticated, getClients);
+router.get("/civilite", authenticated, getCiviliteClients);
+router.get("/total", authenticated, getTotalClients);
+router.get("/:id", authenticated, getClient);
 
-//get all clients
-router.get("/", protect, getClients);
-//get all clients
-router.get("/civilite", protect, getCiviliteClients);
-//get a single client
-router.get("/:id", protect, getClient);
-
-router.post("/", protect, createClient);
-router.patch("/:id", protect, updateClient);
-router.delete("/:id", protect, deleteClient);
-
-// router.route('/').get(protect, ).post(protect, )
-// router.route('/:id').delete(protect, delete).put(protect, update)
+router.post("/", authenticated, createClient);
+router.patch("/:id", authenticated, updateClient);
+router.delete("/:id", authenticated, deleteClient);
 
 module.exports = router;

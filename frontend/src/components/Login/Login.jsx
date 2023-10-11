@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,20 +10,14 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import AMATIK_logo from "./AMATIK_logo.png";
+import background1 from "./background1.jpeg";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-// import {
-//   useLoginUserMutation,
-//   useSignupUserMutation,
-// } from "../../features/auth/authApi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../features/auth/authSlice";
-import {
-  useLoginMutation,
-  useSignupMutation,
-} from "../../features/auth/authApiSlice";
+import { useLoginMutation } from "../../features/auth/authApiSlice";
 
 import { LinearProgress } from "@mui/material";
 import styled from "styled-components";
@@ -57,8 +51,17 @@ function Copyright(props) {
       color="text.secondary"
       align="center"
       {...props}
+      style={{
+        position: "absolute",
+        bottom: "1rem",
+        left: "clac(50% - 58px)", // width is auto resolved to 116 -> 58 * 2
+        right: "calc(50% - 58px)"
+      }}
     >
-      <div style={{ textAlign: "center" }}>
+      <div
+        style={{
+          textAlign: "center",
+        }}>
         <img
           className="logo-img"
           src={AMATIK_logo}
@@ -104,13 +107,10 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const userData = await login({
-        EMAIL: email,
-        PASSWORD: password,
-      }).unwrap();
+      const userData = await login({ email, password }).unwrap();
       // const userData = await login({ email, password }).unwrap();
-      console.log("userData", userData);
-      dispatch(setCredentials({ ...userData, email }));
+      dispatch(setCredentials({ ...userData }));
+      console.log("user data", userData);
 
       setEmail("");
       setPassword("");
@@ -145,7 +145,7 @@ export default function Login() {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
+          backgroundImage: `url(${background1})`,
           backgroundRepeat: "no-repeat",
           backgroundColor: (t) =>
             t.palette.mode === "light"
@@ -158,7 +158,7 @@ export default function Login() {
         <Grid
           container
           component="main"
-          sx={{ height: "100vh", position: "relative" }}
+          sx={{ maxHeight: "100vh", height: "100vh", position: "relative" }}
         >
           <CssBaseline />
           <Grid
@@ -168,6 +168,8 @@ export default function Login() {
               top: "0",
               right: "0",
               bottom: "0",
+              width: "30%",
+              maxHeight: "100%",
             }}
             item
             xs={12}
@@ -176,124 +178,131 @@ export default function Login() {
             component={Paper}
             elevation={6}
             square
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            container
           >
-            <Box
-              sx={{
-                my: 8,
-                mx: 4,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Avatar sx={{ m: 1, bgcolor: "#06603a" }}>
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Connectez-vous
-              </Typography>
-              <Typography variant="body2" color="text.secondary" align="center">
-                {
-                  "Utilisez les informations fournies par votre superviseur pour vous connecter"
-                }
-              </Typography>
-              <Box component="form" noValidate sx={{ mt: 1 }}>
-                <WhiteBorderTextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  value={email}
-                  onChange={handleUserInput}
-                  // ref={userRef}
-                  // inputRef={userRef}
-                  id="email"
-                  label="Adresse e-mail"
-                  name="email"
-                  // autoComplete="email"
-                  autoComplete="off"
-                  autoFocus
-                />
-                <WhiteBorderTextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  value={password}
-                  onChange={handlePwdInput}
-                  name="password"
-                  label="Mot de passe"
-                  type="password"
-                  id="password"
-                  // autoComplete="current-password"
-                />
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  onClick={handleSubmit}
-                  //   disabled={isLoginLoading || isSignupLoading}
-                  variant="contained"
-                  sx={{
-                    mt: 3,
-                    mb: 2,
-                    backgroundColor: "#06603a",
-                    "&:hover": {
+            <Grid item style={{marginTop: "-15vh"}}>
+              <Box
+                sx={{
+                  // my: 28,
+                  mx: 4,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Avatar sx={{ m: 1, bgcolor: "#06603a" }}>
+                  <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                  Connectez-vous
+                </Typography>
+                <Typography variant="body2" color="text.secondary" align="center">
+                  {
+                    "Utilisez les informations fournies par votre superviseur pour vous connecter"
+                  }
+                </Typography>
+                <Box component="form" noValidate sx={{ mt: 1 }}>
+                  <WhiteBorderTextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    value={email}
+                    onChange={handleUserInput}
+                    // ref={userRef}
+                    // inputRef={userRef}
+                    id="email"
+                    label="Adresse e-mail"
+                    name="email"
+                    // autoComplete="email"
+                    autoComplete="off"
+                    autoFocus
+                  />
+                  <WhiteBorderTextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    value={password}
+                    onChange={handlePwdInput}
+                    name="password"
+                    label="Mot de passe"
+                    type="password"
+                    id="password"
+                    // autoComplete="current-password"
+                  />
+                  <FormControlLabel
+                    control={<Checkbox value="remember" color="success" />}
+                    label="Se souvenir de moi"
+                  />
+                  <Button
+                    type="submit"
+                    fullWidth
+                    onClick={handleSubmit}
+                    //   disabled={isLoginLoading || isSignupLoading}
+                    variant="contained"
+                    sx={{
+                      mt: 3,
+                      mb: 2,
                       backgroundColor: "#06603a",
-                    },
-                    "&:active": {
-                      backgroundColor: "#06603a",
-                    },
-                  }}
-                >
-                  SE CONNECTER
-                </Button>
-                <Grid container>
-                  <Grid item xs>
-                    <Link
-                      href="#"
-                      variant="body2"
-                      underline="none"
-                      sx={{
-                        color: "#06603a",
-                        textDecoration: "none",
-                        "&:hover": {
+                      "&:hover": {
+                        backgroundColor: "#06603a",
+                      },
+                      "&:active": {
+                        backgroundColor: "#06603a",
+                      },
+                    }}
+                  >
+                    SE CONNECTER
+                  </Button>
+                  <Grid container>
+                    <Grid item xs>
+                      <Link
+                        href="#"
+                        variant="body2"
+                        underline="none"
+                        sx={{
                           color: "#06603a",
-                          textDecoration: "underline",
-                        },
-                        "&:active": {
+                          textDecoration: "none",
+                          "&:hover": {
+                            color: "#06603a",
+                            textDecoration: "underline",
+                          },
+                          "&:active": {
+                            color: "#06603a",
+                          },
+                        }}
+                      >
+                        Mot de passe oublié ?
+                      </Link>
+                    </Grid>
+                    <Grid item>
+                      <Link
+                        // onClick={() => setIsLogin(!isLogin)}
+                        href="/signup"
+                        variant="body2"
+                        sx={{
                           color: "#06603a",
-                        },
-                      }}
-                    >
-                      Mot de passe oublié ?
-                    </Link>
+                          textDecoration: "none",
+                          "&:hover": {
+                            color: "#06603a",
+                            textDecoration: "underline",
+                          },
+                          "&:active": {
+                            color: "#06603a",
+                          },
+                        }}
+                      >
+                        {"Créer nouveau compte"}
+                      </Link>
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <Link
-                      // onClick={() => setIsLogin(!isLogin)}
-                      href="/signup"
-                      variant="body2"
-                      sx={{
-                        color: "#06603a",
-                        textDecoration: "none",
-                        "&:hover": {
-                          color: "#06603a",
-                          textDecoration: "underline",
-                        },
-                        "&:active": {
-                          color: "#06603a",
-                        },
-                      }}
-                    >
-                      {"Créer nouveau compte"}
-                    </Link>
-                  </Grid>
-                </Grid>
-                <Copyright sx={{ mt: 5 }} />
+                  <Copyright sx={{ mt: 5 }} />
+                </Box>
               </Box>
-            </Box>
+
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
